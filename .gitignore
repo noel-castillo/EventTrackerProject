@@ -1,0 +1,11 @@
+SDRob 4:55 PM
+.DS_Store
+Servers
+target
+build
+bin
+.metadata
+# .settings
+.gradle
+*.war
+*.bak
