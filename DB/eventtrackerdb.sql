@@ -21,11 +21,10 @@ USE `eventtrackerdb` ;
 DROP TABLE IF EXISTS `user` ;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`email`))
 ENGINE = InnoDB;
 
 
@@ -55,18 +54,18 @@ CREATE TABLE IF NOT EXISTS `photoshoot` (
   `length` INT NOT NULL DEFAULT 0,
   `description` TEXT NULL,
   `address_id` INT NOT NULL,
-  `user_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `user_id`),
+  `user_email` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`, `user_email`),
   INDEX `fk_photoshoot_address1_idx` (`address_id` ASC),
-  INDEX `fk_photoshoot_user1_idx` (`user_id` ASC),
+  INDEX `fk_photoshoot_user1_idx` (`user_email` ASC),
   CONSTRAINT `fk_photoshoot_address1`
     FOREIGN KEY (`address_id`)
     REFERENCES `address` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_photoshoot_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`id`)
+    FOREIGN KEY (`user_email`)
+    REFERENCES `user` (`email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -97,18 +96,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `friends` ;
 
 CREATE TABLE IF NOT EXISTS `friends` (
-  `user_id` INT NOT NULL,
-  `friend_id` INT NOT NULL,
-  INDEX `fk_friends_user1_idx` (`user_id` ASC),
-  INDEX `fk_friends_user2_idx` (`friend_id` ASC),
-  CONSTRAINT `fk_friends_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`id`)
+  `user_email` VARCHAR(100) NOT NULL,
+  `friend_email` VARCHAR(100) NOT NULL,
+  INDEX `fk_friends_user1_idx` (`user_email` ASC),
+  INDEX `fk_friends_user2_idx` (`friend_email` ASC),
+  CONSTRAINT `fk_friends_user`
+    FOREIGN KEY (`user_email`)
+    REFERENCES `user` (`email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_friends_user2`
-    FOREIGN KEY (`friend_id`)
-    REFERENCES `user` (`id`)
+  CONSTRAINT `fk_friends_friend`
+    FOREIGN KEY (`friend_email`)
+    REFERENCES `user` (`email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -129,8 +128,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `eventtrackerdb`;
-INSERT INTO `user` (`id`, `name`, `email`, `password`) VALUES (1, 'Noel', 'admin', 'admin');
-INSERT INTO `user` (`id`, `name`, `email`, `password`) VALUES (2, 'Annie', 'mozz', 'mozz');
+INSERT INTO `user` (`email`, `name`, `password`) VALUES ('noel@es', 'Noel', 'admin');
+INSERT INTO `user` (`email`, `name`, `password`) VALUES ('annie@es', 'Annie', 'mozz');
 
 COMMIT;
 
@@ -150,7 +149,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `eventtrackerdb`;
-INSERT INTO `photoshoot` (`id`, `length`, `description`, `address_id`, `user_id`) VALUES (1, 120, 'A Holiday Shoot!', 1, 2);
+INSERT INTO `photoshoot` (`id`, `length`, `description`, `address_id`, `user_email`) VALUES (1, 120, 'A Holiday Shoot!', 1, 'annie@es');
 
 COMMIT;
 
@@ -170,8 +169,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `eventtrackerdb`;
-INSERT INTO `friends` (`user_id`, `friend_id`) VALUES (1, 2);
-INSERT INTO `friends` (`user_id`, `friend_id`) VALUES (2, 1);
+INSERT INTO `friends` (`user_email`, `friend_email`) VALUES ('noel@es', 'annie@es');
+INSERT INTO `friends` (`user_email`, `friend_email`) VALUES ('annie@es', 'noel@es');
 
 COMMIT;
 

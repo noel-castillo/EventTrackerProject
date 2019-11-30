@@ -6,6 +6,10 @@ import com.skilldistillery.eventtracker.entities.User;
 
 public interface UserService {
 
-	List<User> findAll();
+	List<User> findAllUsers();
+
+	User findUserByEmail(String email);
+
+	User createUser(User user);
 
 }

@@ -15,7 +15,22 @@ public class UserServiceImpl implements UserService {
 	private UserRepository repo;
 
 	@Override
-	public List<User> findAll() {
+	public List<User> findAllUsers() {
 		return repo.findAll();
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		return repo.findById(email).get();
+	}
+
+	@Override
+	public User createUser(User user) {
+
+		if (repo.findById(user.getEmail()).isPresent()) {
+			return null;
+		} else {
+			return repo.saveAndFlush(user);
+		}
 	}
 }

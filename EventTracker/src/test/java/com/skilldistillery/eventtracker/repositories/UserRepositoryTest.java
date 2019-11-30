@@ -25,7 +25,7 @@ class UserRepositoryTest {
 	@DisplayName("Test user repository find by id")
 	void test() {
 
-		Optional<User> opt = repo.findById(1);
+		Optional<User> opt = repo.findById("noel@es");
 		assertTrue(opt.isPresent());
 		User user = opt.get();
 		assertEquals("Noel", user.getName());

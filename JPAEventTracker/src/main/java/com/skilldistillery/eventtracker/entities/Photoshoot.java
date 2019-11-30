@@ -30,7 +30,7 @@ public class Photoshoot {
 	private Address address;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_email")
 	private User user;
 	
 	@OneToMany(mappedBy = "photoshoot")
@@ -48,7 +48,7 @@ public class Photoshoot {
 	@Override
 	public String toString() {
 		return "Photoshoot [id=" + id + ", length=" + length + ", description=" + description + ", address=" + address
-				+ ", user=" + user.getId() + "]";
+				+ ", user=" + user.getEmail() + "]";
 	}
 
 	public int getId() {
