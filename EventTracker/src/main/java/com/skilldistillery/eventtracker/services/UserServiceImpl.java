@@ -33,4 +33,25 @@ public class UserServiceImpl implements UserService {
 			return repo.saveAndFlush(user);
 		}
 	}
+
+	@Override
+	public User updateUser(String email, User user) {
+		User existingUser = repo.findById(email).get();
+		existingUser.setName(user.getName());
+		existingUser.setPassword(user.getPassword());
+
+		return repo.saveAndFlush(existingUser);
+	}
+
+	@Override
+	public boolean deleteUserByEmail(String email) {
+
+		if (repo.existsById(email)) {
+			repo.deleteById(email);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

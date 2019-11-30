@@ -12,4 +12,8 @@ public interface UserService {
 
 	User createUser(User user);
 
+	boolean deleteUserByEmail(String email);
+
+	User updateUser(String email, User user);
+
 }
