@@ -9,7 +9,10 @@
     </provider>
 
 	<!-- Class Definitions -->
-	<class>com.skilldistillery.eventtracker.entities.FIXME</class>
+	<class>com.skilldistillery.eventtracker.entities.User</class>
+	<class>com.skilldistillery.eventtracker.entities.Address</class>
+	<class>com.skilldistillery.eventtracker.entities.Photoshoot</class>
+	<class>com.skilldistillery.eventtracker.entities.PhotoshootImage</class>
 
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/eventtrackerdb?useSSL=false&amp;useLegacyDatetimeCode=false&amp;serverTimezone=MST" />
