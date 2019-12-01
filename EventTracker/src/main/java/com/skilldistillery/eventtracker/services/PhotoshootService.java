@@ -16,4 +16,6 @@ public interface PhotoshootService {
 
 	boolean deletePhotoshootById(int psId);
 
+	Photoshoot findPhotoshootById(int psId);
+
 }

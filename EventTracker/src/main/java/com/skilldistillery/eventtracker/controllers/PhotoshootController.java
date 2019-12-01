@@ -30,8 +30,14 @@ public class PhotoshootController {
 			HttpServletResponse response) {
 		return svc.findAllPhotoshootsByUser(email);
 	}
+	
+	@GetMapping("users/{email}/photoshoots/{psId}")
+	public Photoshoot findPhotoshootById(@PathVariable String email, @PathVariable int psId, HttpServletRequest request,
+			HttpServletResponse response) {
+		return svc.findPhotoshootById(psId);
+	}
 
-	@GetMapping("users/photoshoots")
+	@GetMapping("photoshoots")
 	public List<Photoshoot> findAllPhotoshoots() {
 
 		return svc.findAllPhotoshoots();

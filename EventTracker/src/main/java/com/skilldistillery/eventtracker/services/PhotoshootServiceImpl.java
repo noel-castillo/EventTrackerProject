@@ -72,4 +72,9 @@ public class PhotoshootServiceImpl implements PhotoshootService {
 			return false;
 		}
 	}
+
+	@Override
+	public Photoshoot findPhotoshootById(int psId) {
+		return psRepo.findById(psId).get();
+	}
 }
