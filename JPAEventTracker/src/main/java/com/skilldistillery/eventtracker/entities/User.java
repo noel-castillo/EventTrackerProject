@@ -1,10 +1,9 @@
 package com.skilldistillery.eventtracker.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -21,7 +20,7 @@ public class User {
 	private String name;
 
 	private String password;
-	
+
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Photoshoot> photoshoots;
@@ -38,7 +37,6 @@ public class User {
 	public String toString() {
 		return "User [email=" + email + ", name=" + name + ", password=" + password + "]";
 	}
-
 
 	public String getName() {
 		return name;
@@ -63,7 +61,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 
 	public List<Photoshoot> getPhotoshoots() {
 		return photoshoots;
@@ -71,6 +68,22 @@ public class User {
 
 	public void setPhotoshoots(List<Photoshoot> photoshoots) {
 		this.photoshoots = photoshoots;
+	}
+
+	public void addPhotoshoot(Photoshoot photoshoot) {
+		if (photoshoots == null)
+			photoshoots = new ArrayList<>();
+		if (!photoshoots.contains(photoshoot)) {
+			photoshoots.add(photoshoot);
+			photoshoot.setUser(this);
+		}
+	}
+
+	public void removePhotoshoot(Photoshoot photoshoot) {
+		if (photoshoots != null && photoshoots.contains(photoshoot)) {
+			photoshoots.remove(photoshoot);
+			photoshoot.setUser(null);
+		}
 	}
 
 	@Override

@@ -6,8 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,66 +24,44 @@ public class PhotoshootImageController {
 	@Autowired
 	private PhotoshootImageService svc;
 
-
 	@GetMapping("users/{email}/photoshoots/{psId}/images")
-	public List<PhotoshootImage> findImagesOfPhotoshootById(@PathVariable String email, @PathVariable int psId, HttpServletRequest request,
-			HttpServletResponse response) {
+	public List<PhotoshootImage> findImagesOfPhotoshootById(@PathVariable String email, @PathVariable int psId,
+			HttpServletRequest request, HttpServletResponse response) {
 		return svc.findImagesOfPhotoshootById(psId);
 	}
+
+	@PostMapping("users/{email}/photoshoots/{psId}/images")
+	public PhotoshootImage createPhotoshootImage(@RequestBody PhotoshootImage photoshootImage,
+			@PathVariable String email, @PathVariable int psId, HttpServletRequest request,
+			HttpServletResponse response) {
+		if ((photoshootImage = svc.createPhotoshootImage(photoshootImage, psId)) != null) {
+			response.setStatus(201);
+			StringBuffer url = request.getRequestURL();
+			url.append("/").append(photoshootImage.getId());
+			response.addHeader("Location", url.toString());
+			return photoshootImage;
+		} else {
+			response.setStatus(400);
+			return null;
+		}
+	}
 	
-//	@GetMapping("photoshoots")
-//	public List<Photoshoot> findAllPhotoshoots() {
-//
-//		return svc.findAllPhotoshoots();
-//	}
-//
-//	@PostMapping("users/{email}/photoshoots")
-//	public Photoshoot createPhotoshoot(@RequestBody Photoshoot photoshoot, @PathVariable String email,
-//			HttpServletRequest request, HttpServletResponse response) {
-//		if ((photoshoot = svc.createPhotoshoot(photoshoot, email)) != null) {
-//			response.setStatus(201);
-//			StringBuffer url = request.getRequestURL();
-//			url.append("/").append(photoshoot.getId());
-//			response.addHeader("Location", url.toString());
-//			return photoshoot;
-//		} else {
-//			response.setStatus(400);
-//			return null;
-//		}
-//	}
-//
-//	@PutMapping("users/{email}/photoshoots/{psId}")
-//	public Photoshoot updatePhotoshoot(@PathVariable String email, @PathVariable int psId,
-//			@RequestBody Photoshoot photoshoot, HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			photoshoot = svc.updatePhotoshoot(photoshoot, psId);
-//			if (photoshoot == null) {
-//				response.setStatus(404);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			response.setStatus(400);
-//			photoshoot = null;
-//		}
-//		return photoshoot;
-//	}
-//
-//	@DeleteMapping("users/{email}/photoshoots/{psId}")
-//	public void deletePhotoshoot(@PathVariable String email, @PathVariable int psId, HttpServletRequest request,
-//			HttpServletResponse response) {
-//
-//		try {
-//			boolean deleted = svc.deletePhotoshootById(psId);
-//			if (deleted) {
-//				response.setStatus(204);
-//			} else {
-//				response.setStatus(404);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			response.setStatus(400);
-//		}
-//
-//	}
+	@DeleteMapping("users/{email}/photoshoots/{psId}/images/{imgId}")
+	public void deletePhotoshootImage(@PathVariable String email, @PathVariable int psId, @PathVariable int imgId, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		try {
+			boolean deleted = svc.deletePhotoshootImageById(imgId, psId);
+			if (deleted) {
+				response.setStatus(204);
+			} else {
+				response.setStatus(404);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(400);
+		}
+
+	}
 
 }

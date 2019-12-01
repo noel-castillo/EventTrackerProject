@@ -1,5 +1,6 @@
 package com.skilldistillery.eventtracker.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -32,7 +33,7 @@ public class Photoshoot {
 	@ManyToOne
 	@JoinColumn(name = "user_email")
 	private User user;
-	
+
 	@OneToMany(mappedBy = "photoshoot")
 	@JsonIgnore
 	private List<PhotoshootImage> photoshootImages;
@@ -90,7 +91,6 @@ public class Photoshoot {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
 
 	public List<PhotoshootImage> getPhotoshootImages() {
 		return photoshootImages;
@@ -98,6 +98,22 @@ public class Photoshoot {
 
 	public void setPhotoshootImages(List<PhotoshootImage> photoshootImages) {
 		this.photoshootImages = photoshootImages;
+	}
+
+	public void addPhotoshootImage(PhotoshootImage psImage) {
+		if (photoshootImages == null)
+			photoshootImages = new ArrayList<>();
+		if (!photoshootImages.contains(psImage)) {
+			photoshootImages.add(psImage);
+			psImage.setPhotoshoot(this);
+		}
+	}
+
+	public void removePhotoshootImage(PhotoshootImage psImage) {
+		if (photoshootImages != null && photoshootImages.contains(psImage)) {
+			photoshootImages.remove(psImage);
+			psImage.setPhotoshoot(null);
+		}
 	}
 
 	@Override

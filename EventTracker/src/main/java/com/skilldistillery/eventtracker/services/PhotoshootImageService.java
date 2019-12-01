@@ -8,4 +8,8 @@ public interface PhotoshootImageService {
 
 	List<PhotoshootImage> findImagesOfPhotoshootById(int psId);
 
+	PhotoshootImage createPhotoshootImage(PhotoshootImage photoshootImage, int psId);
+
+	boolean deletePhotoshootImageById(int imgId, int psId);
+
 }
