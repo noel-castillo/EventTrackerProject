@@ -10,4 +10,6 @@ public interface PhotoshootService {
 
 	List<Photoshoot> findAllPhotoshoots();
 
+	Photoshoot createPhotoshoot(Photoshoot photoshoot, String email);
+
 }

@@ -34,7 +34,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `address` ;
 
 CREATE TABLE IF NOT EXISTS `address` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `street` VARCHAR(100) NULL,
   `city` VARCHAR(100) NULL,
   `state` VARCHAR(100) NULL,
@@ -50,7 +50,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `photoshoot` ;
 
 CREATE TABLE IF NOT EXISTS `photoshoot` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `length` INT NOT NULL DEFAULT 0,
   `description` TEXT NULL,
   `address_id` INT NOT NULL,
@@ -77,7 +77,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `photoshoot_image` ;
 
 CREATE TABLE IF NOT EXISTS `photoshoot_image` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `url` VARCHAR(250) NULL,
   `photoshoot_id` INT NOT NULL,
   PRIMARY KEY (`id`),

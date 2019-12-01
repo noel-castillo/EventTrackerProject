@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.skilldistillery.eventtracker.entities.Photoshoot;
 import com.skilldistillery.eventtracker.entities.User;
+import com.skilldistillery.eventtracker.repositories.AddressRepository;
 import com.skilldistillery.eventtracker.repositories.PhotoshootRepository;
 import com.skilldistillery.eventtracker.repositories.UserRepository;
 
@@ -18,6 +19,9 @@ public class PhotoshootServiceImpl implements PhotoshootService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private AddressRepository addrRepo;
 
 	@Override
 	public List<Photoshoot> findAllPhotoshootsByUser(String email) {
@@ -28,5 +32,14 @@ public class PhotoshootServiceImpl implements PhotoshootService {
 	@Override
 	public List<Photoshoot> findAllPhotoshoots() {
 		return psRepo.findAll();
+	}
+
+	@Override
+	public Photoshoot createPhotoshoot(Photoshoot photoshoot, String email) {
+		
+		User user = userRepo.findById(email).get();
+		photoshoot.setUser(user);
+		photoshoot.setAddress(addrRepo.saveAndFlush(photoshoot.getAddress()));
+		return psRepo.saveAndFlush(photoshoot);
 	}
 }

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,21 +33,21 @@ public class PhotoshootController {
 
 		return svc.findAllPhotoshoots();
 	}
-//
-//	@PostMapping("users")
-//	public User createUser(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
-//		if ((user = svc.createUser(user)) != null) {
-//			response.setStatus(201);
-//			StringBuffer url = request.getRequestURL();
-//			url.append("/").append(user.getEmail());
-//			response.addHeader("Location", url.toString());
-//			return user;
-//		} else {
-//			response.setStatus(400);
-//			return null;
-//		}
-//	}
-//
+
+	@PostMapping("users/{email}/photoshoots")
+	public Photoshoot createPhotoshoot(@RequestBody Photoshoot photoshoot, @PathVariable String email, HttpServletRequest request, HttpServletResponse response) {
+		if ((photoshoot = svc.createPhotoshoot(photoshoot, email)) != null) {
+			response.setStatus(201);
+			StringBuffer url = request.getRequestURL();
+			url.append("/").append(photoshoot.getId());
+			response.addHeader("Location", url.toString());
+			return photoshoot;
+		} else {
+			response.setStatus(400);
+			return null;
+		}
+	}
+
 //	@PutMapping("users/{email}")
 //	public User updateUser(@PathVariable String email, @RequestBody User user, HttpServletRequest request,
 //			HttpServletResponse response) {
