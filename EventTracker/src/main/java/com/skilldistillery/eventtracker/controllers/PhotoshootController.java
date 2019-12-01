@@ -6,9 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +26,8 @@ public class PhotoshootController {
 	private PhotoshootService svc;
 
 	@GetMapping("users/{email}/photoshoots")
-	public List<Photoshoot> findAllPhotoshootsByUser(@PathVariable String email, HttpServletRequest request, HttpServletResponse response) {
+	public List<Photoshoot> findAllPhotoshootsByUser(@PathVariable String email, HttpServletRequest request,
+			HttpServletResponse response) {
 		return svc.findAllPhotoshootsByUser(email);
 	}
 
@@ -35,7 +38,8 @@ public class PhotoshootController {
 	}
 
 	@PostMapping("users/{email}/photoshoots")
-	public Photoshoot createPhotoshoot(@RequestBody Photoshoot photoshoot, @PathVariable String email, HttpServletRequest request, HttpServletResponse response) {
+	public Photoshoot createPhotoshoot(@RequestBody Photoshoot photoshoot, @PathVariable String email,
+			HttpServletRequest request, HttpServletResponse response) {
 		if ((photoshoot = svc.createPhotoshoot(photoshoot, email)) != null) {
 			response.setStatus(201);
 			StringBuffer url = request.getRequestURL();
@@ -48,37 +52,38 @@ public class PhotoshootController {
 		}
 	}
 
-//	@PutMapping("users/{email}")
-//	public User updateUser(@PathVariable String email, @RequestBody User user, HttpServletRequest request,
-//			HttpServletResponse response) {
-//		try {
-//			user = svc.updateUser(email, user);
-//			if (user == null) {
-//				response.setStatus(404);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			response.setStatus(400);
-//			user = null;
-//		}
-//		return user;
-//	}
-//
-//	@DeleteMapping("users/{email}")
-//	public void deleteUser(@PathVariable String email, HttpServletRequest request, HttpServletResponse response) {
-//
-//		try {
-//			boolean deleted = svc.deleteUserByEmail(email);
-//			if (deleted) {
-//				response.setStatus(204);
-//			} else {
-//				response.setStatus(404);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			response.setStatus(400);
-//		}
-//
-//	}
+	@PutMapping("users/{email}/photoshoots/{psId}")
+	public Photoshoot updatePhotoshoot(@PathVariable String email, @PathVariable int psId,
+			@RequestBody Photoshoot photoshoot, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			photoshoot = svc.updatePhotoshoot(photoshoot, psId);
+			if (photoshoot == null) {
+				response.setStatus(404);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(400);
+			photoshoot = null;
+		}
+		return photoshoot;
+	}
+
+	@DeleteMapping("users/{email}/photoshoots/{psId}")
+	public void deletePhotoshoot(@PathVariable String email, @PathVariable int psId, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		try {
+			boolean deleted = svc.deletePhotoshootById(psId);
+			if (deleted) {
+				response.setStatus(204);
+			} else {
+				response.setStatus(404);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(400);
+		}
+
+	}
 
 }

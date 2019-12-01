@@ -12,4 +12,8 @@ public interface PhotoshootService {
 
 	Photoshoot createPhotoshoot(Photoshoot photoshoot, String email);
 
+	Photoshoot updatePhotoshoot(Photoshoot photoshoot, int id);
+
+	boolean deletePhotoshootById(int psId);
+
 }
