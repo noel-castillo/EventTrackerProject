@@ -26,7 +26,7 @@ public class UserController {
 	private UserService svc;
 
 	@GetMapping("users")
-	public List<User> findAllUser() {
+	public List<User> findAllUsers() {
 		return svc.findAllUsers();
 	}
 
