@@ -32,14 +32,13 @@ Spring Boot, REST, JSON, Postman.
 | `PhotoshootImage`       | `POST api/users/{email}/photoshoots/{psId}/images`          | Add an image to a photoshoot                   |
 | `Void`                  | `DELETE api/users/{email}/photoshoots/{psId}/images/{imgId}`| Delete a image in a photoshoot                 |
 
+### Topics Covered
 
-### Topics Covered/Learning Objectives
-
-* Create a MySql DB table
-* Create a JPA Project
-* Create a Java entity class POJO that models your database table.
-* Map a POJO using JPA.
-* Configure a Spring Boot app to publish a REST API.
-* Use Spring REST annotations.
-* Use Spring Data JPA to perform all CRUD operations.
-* Send and receive JSON.
+* Creating a database with MySQL Workbench
+* Create a JPA Project and Spring Boot Project
+* Map all entities and relationships according to the database model
+* Object Relational Mapping
+* Spring Data JPA
+* RESTFul Services
+* HTTP Request and Response objects
+* JUnit 5: Test driven development
