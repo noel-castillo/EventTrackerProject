@@ -71,18 +71,21 @@ public class UserController {
 	}
 
 	@DeleteMapping("users/{email}")
-	public void deleteUser(@PathVariable String email, HttpServletRequest request, HttpServletResponse response) {
+	public boolean deleteUser(@PathVariable String email, HttpServletRequest request, HttpServletResponse response) {
 
 		try {
 			boolean deleted = svc.deleteUserByEmail(email);
 			if (deleted) {
 				response.setStatus(204);
+				return true;
 			} else {
 				response.setStatus(404);
+				return false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.setStatus(400);
+			return false;
 		}
 
 	}
