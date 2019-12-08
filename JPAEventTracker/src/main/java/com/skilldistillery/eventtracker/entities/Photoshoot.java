@@ -31,11 +31,11 @@ public class Photoshoot {
 	private Address address;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "user_email")
 	private User user;
 
 	@OneToMany(mappedBy = "photoshoot")
-	@JsonIgnore
 	private List<PhotoshootImage> photoshootImages;
 
 //	C O N S T R U C T O R S

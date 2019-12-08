@@ -22,7 +22,6 @@ public class User {
 	private String password;
 
 	@OneToMany(mappedBy = "user")
-	@JsonIgnore
 	private List<Photoshoot> photoshoots;
 
 //	C O N S T R U C T O R S

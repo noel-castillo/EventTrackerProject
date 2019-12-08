@@ -160,6 +160,8 @@ COMMIT;
 START TRANSACTION;
 USE `eventtrackerdb`;
 INSERT INTO `photoshoot_image` (`id`, `url`, `photoshoot_id`) VALUES (1, 'https://i.imgur.com/5IUznDP.jpg', 1);
+INSERT INTO `photoshoot_image` (`id`, `url`, `photoshoot_id`) VALUES (2, 'https://i.imgur.com/L07Euil.jpg', 1);
+INSERT INTO `photoshoot_image` (`id`, `url`, `photoshoot_id`) VALUES (3, 'https://i.imgur.com/g9GTkoE.jpg', 1);
 
 COMMIT;
 

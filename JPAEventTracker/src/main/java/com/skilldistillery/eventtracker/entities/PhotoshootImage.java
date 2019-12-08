@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "photoshoot_image")
 public class PhotoshootImage {
@@ -22,6 +24,7 @@ public class PhotoshootImage {
 
 	@ManyToOne
 	@JoinColumn(name = "photoshoot_id")
+	@JsonIgnore
 	private Photoshoot photoshoot;
 
 //	C O N S T R U C T O R S
