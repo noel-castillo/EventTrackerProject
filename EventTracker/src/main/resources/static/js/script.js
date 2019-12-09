@@ -74,6 +74,30 @@ function createPhotoshoot(user) {
 	reload();
 }
 
+function addImage(user, photoshoot) {
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'api/users/' + user.email + '/photoshoots/'
+			+ photoshoot.id + '/images/', true);
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status < 400) {
+			var imageObject = JSON.parse(xhr.responseText);
+		}
+		if (xhr.readyState === 4 && xhr.status >= 400) {
+			console.error(xhr.status + ': ' + xhr.responseText);
+			var dataDiv = document.getElementById('userData');
+			dataDiv.textContent = 'Error Adding Image';
+		}
+	};
+	let form = document.addAddImageForm;
+	var newImageObject = {
+		url : document.addImageForm.url.value,
+		photoshoot : photoshoot
+	};
+	var newImageJsonString = JSON.stringify(newImageObject);
+	xhr.send(newImageJsonString);
+}
+
 function getUser(email, password) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', 'api/users/' + email, true);
@@ -99,19 +123,20 @@ function getUser(email, password) {
 	xhr.send(null);
 }
 
-function displayPhotoshoot(user) {
+function displayPhotoshoot(user, psId) {
 	console.log("Inside display ps");
 	var xhr = new XMLHttpRequest();
-	let form = document.addPsForm;
-	let psId = document.psForm.psId.value;
 	xhr.open('GET', 'api/users/' + user.email + '/photoshoots/' + psId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && xhr.status < 400) {
 			var photoshoot = JSON.parse(xhr.responseText);
 			// displayUser(user);
 			var dataDiv = document.getElementById('psImages');
+			var dataTitleDiv = document.getElementById('psTitle');
+			dataTitleDiv.innerHTML = '';
+			dataTitleDiv.innerHTML = '<hr>' + photoshoot.name + '</hr><br>';
 			dataDiv.innerHTML = '';
-			dataDiv.innerHTML = '<p>' + photoshoot.description + '</p><br>';
+			dataDiv.innerHTML = '<hr>' + photoshoot.description + '</hr><br>';
 			for (let c = 0; c < photoshoot.photoshootImages.length; c++) {
 
 				try {
@@ -119,10 +144,37 @@ function displayPhotoshoot(user) {
 				} catch (cc) {
 					console.log(photoshoot.photoshootImages[cc].url);
 					dataDiv.innerHTML += '<br>';
-					dataDiv.innerHTML += '<p>'
-							+ photoshoot.photoshootImages[cc].url + '</p><br>';
+					dataDiv.innerHTML += '<hr>'
+							+ photoshoot.photoshootImages[cc].url + '</hr><br>';
 				}
 			}
+
+			dataDiv.innerHTML += '<button type="button" id="dropdownMenu1" data-toggle="dropdown"'
+					+ 'class="btn btn-outline-secondary dropdown-toggle">'
+					+ 'ADD IMAGE<span class="caret"></span>'
+					+ '</button>'
+					+ '<ul class="dropdown-menu dropdown-menu-right mt-2">'
+					+ '<li class="px-3 py-2">'
+					+ '<form class="form" name="addImageForm" role="form">'
+					+ '<div class="form-group">'
+					+ '<input name="url"'
+					+ 'placeholder="Image URL"'
+					+ 'class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<button id="addImage" type="button" class="btn btn-secondary btn-block">Add to '
+					+ photoshoot.name
+					+ '</button>'
+					+ '</div>'
+					+ '</form>'
+					+ '</li>' + '</ul>';
+
+			document.addImageForm.addImage.addEventListener('click', function(
+					event) {
+				event.preventDefault();
+				addImage(user, photoshoot);
+			});
 
 		}
 		if (xhr.readyState === 4 && xhr.status >= 400) {
@@ -388,6 +440,7 @@ function displayUser(user) {
 		dataDiv.removeChild(dataDiv.firstElementChild);
 	}
 	let nameh5 = document.createElement('h5');
+	nameh5.setAttribute('id', 'refreshMe');
 	dataDiv.appendChild(nameh5);
 	nameh5.textContent = user.name;
 	let emailh6 = document.createElement('h6');
@@ -407,18 +460,23 @@ function displayUser(user) {
 		updateUser(user);
 	});
 
+	refreshMe.addEventListener('click', function(event) {
+		event.preventDefault();
+		getUser(user.email, user.password);
+	});
+
 	var allPs = document.getElementsByClassName('btn btn-danger');
 	var index = '';
-	var displayPs, i, ii;
+	var i, ii;
 	console.log(allPs.length);
 	for (i = 0; i < allPs.length; i++) {
 		ii = i;
-		displayPhotoshoot(user, user.photoshoots[ii].id);
 		console.log("adding listener to " + user.photoshoots[ii].id);
 		allPs[ii].addEventListener('click', function(event) {
 			console.log("CLICKY");
 			event.preventDefault();
-			displayPhotoshoot(user);
+			var psId = document.psForm.psId.value;
+			displayPhotoshoot(user, psId);
 		});
 	}
 
