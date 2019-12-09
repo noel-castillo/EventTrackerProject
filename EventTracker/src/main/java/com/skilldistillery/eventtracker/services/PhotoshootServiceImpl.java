@@ -53,6 +53,7 @@ public class PhotoshootServiceImpl implements PhotoshootService {
 		if (psRepo.existsById(id)) {
 			Photoshoot existingPs = psRepo.findById(id).get();
 
+			existingPs.setName(photoshoot.getName());
 			existingPs.setLength(photoshoot.getLength());
 			existingPs.setDescription(photoshoot.getDescription());
 			existingPs.getAddress().setStreet(photoshoot.getAddress().getStreet());

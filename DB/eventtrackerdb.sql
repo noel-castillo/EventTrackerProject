@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `photoshoot` (
   `description` TEXT NULL,
   `address_id` INT NOT NULL,
   `user_email` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(100) NULL,
   PRIMARY KEY (`id`, `user_email`),
   INDEX `fk_photoshoot_address1_idx` (`address_id` ASC),
   INDEX `fk_photoshoot_user1_idx` (`user_email` ASC),
@@ -149,7 +150,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `eventtrackerdb`;
-INSERT INTO `photoshoot` (`id`, `length`, `description`, `address_id`, `user_email`) VALUES (1, 120, 'A Holiday Shoot!', 1, 'annie@es');
+INSERT INTO `photoshoot` (`id`, `length`, `description`, `address_id`, `user_email`, `name`) VALUES (1, 120, 'Taking photos of winter landscape.', 1, 'annie@es', 'Christmas 2019');
 
 COMMIT;
 

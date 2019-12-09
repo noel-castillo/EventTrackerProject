@@ -41,6 +41,39 @@ function addNewUser() {
 	xhr.send(newUserJsonString);
 }
 
+function createPhotoshoot(user) {
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'api/users/' + user.email + '/photoshoots', true);
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status < 400) {
+			var psObject = JSON.parse(xhr.responseText);
+		}
+		if (xhr.readyState === 4 && xhr.status >= 400) {
+			console.error(xhr.status + ': ' + xhr.responseText);
+			var dataDiv = document.getElementById('userData');
+			dataDiv.textContent = 'Error Adding Photoshoot';
+		}
+	};
+	let form = document.addNewPsForm;
+	var newPsObject = {
+		name : document.newPsForm.name.value,
+		description : document.newPsForm.description.value,
+		length : document.newPsForm.length.value,
+		address : {
+			street : document.newPsForm.street.value,
+			city : document.newPsForm.city.value,
+			state : document.newPsForm.state.value,
+			zip : document.newPsForm.zip.value,
+			phone : document.newPsForm.phone.value
+		}
+	};
+	var newPsJsonString = JSON.stringify(newPsObject);
+	xhr.send(newPsJsonString);
+	getUser(user.email, user.password);
+	reload();
+}
+
 function getUser(email, password) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', 'api/users/' + email, true);
@@ -66,30 +99,29 @@ function getUser(email, password) {
 	xhr.send(null);
 }
 
-function displayPhotoshoot(user, psId) {
+function displayPhotoshoot(user) {
+	console.log("Inside display ps");
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'api/photoshoots/' + psId, true);
+	let form = document.addPsForm;
+	let psId = document.psForm.psId.value;
+	xhr.open('GET', 'api/users/' + user.email + '/photoshoots/' + psId, true);
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && xhr.status < 400) {
 			var photoshoot = JSON.parse(xhr.responseText);
-			displayUser(user);
+			// displayUser(user);
 			var dataDiv = document.getElementById('psImages');
 			dataDiv.innerHTML = '';
+			dataDiv.innerHTML = '<p>' + photoshoot.description + '</p><br>';
 			for (let c = 0; c < photoshoot.photoshootImages.length; c++) {
-				console.log(photoshoot.photoshootImages[c].url);
-				dataDiv.innerHTML += '<div class="col-sm-12 col-md ftco-animate">' 
-					+ '<a href="' 
-					+ photoshoot.photoshootImages[c].url 
-					+ '" class="insta-img image-popup" style="background-image:url("' 
-					+ photoshoot.photoshootImages[c].url
-					+ '");">' 
-					+ '<div class="icon d-flex justify-content-center">' 
-					+ '<span class="icon-instagram align-self-center"></span>' 
-					+ '</div></a></div>';
-//				dataDiv.innerHTML += '<div class="slider-item js-fullheight" style="background-image:url('
-//						+ photoshoot.photoshootImages[c].url
-//						+ ');">'
-//						+ '</div>';
+
+				try {
+					throw c
+				} catch (cc) {
+					console.log(photoshoot.photoshootImages[cc].url);
+					dataDiv.innerHTML += '<br>';
+					dataDiv.innerHTML += '<p>'
+							+ photoshoot.photoshootImages[cc].url + '</p><br>';
+				}
 			}
 
 		}
@@ -150,6 +182,9 @@ function displayHome() {
 	var descNameBgDiv = document.getElementById('descNameBg');
 	var signature = document.getElementById('signature');
 	var logoutDiv = document.getElementById('logoutDiv');
+	var updateDiv = document.getElementById('updateDiv');
+	var deleteDiv = document.getElementById('deleteDiv');
+	var psDiv = document.getElementById('psDiv');
 	var deleteDiv = document.getElementById('deleteDiv');
 	var loginDiv = document.getElementById('loginDiv');
 	var registerDiv = document.getElementById('registerDiv');
@@ -157,6 +192,8 @@ function displayHome() {
 	dataDiv.textContent = '';
 	logoutDiv.innerHTML = '';
 	deleteDiv.innerHTML = '';
+	updateDiv.innerHTML = '';
+	psDiv.innerHTML = '';
 
 	loginDiv.innerHTML = '<button type="button" id="dropdownMenu1" data-toggle="dropdown"'
 			+ 'class="btn btn-outline-secondary dropdown-toggle">'
@@ -232,7 +269,7 @@ function displayUser(user) {
 	var loginDiv = document.getElementById('loginDiv');
 	var registerDiv = document.getElementById('registerDiv');
 	dataDiv.textContent = '';
-	logoutDiv.innerHTML = '<button type="submit" class="btn btn-secondary btn-block">Logout</button>';
+	logoutDiv.innerHTML = '<button type="submit" class="btn btn-primary btn-block">Logout</button>';
 
 	updateDiv.innerHTML = '<button type="button" id="dropdownMenu1" data-toggle="dropdown"'
 			+ 'class="btn btn-outline-secondary dropdown-toggle">'
@@ -261,38 +298,86 @@ function displayUser(user) {
 			// +
 			// '</div>' +
 			'<div class="form-group">'
-			+ '<button id="update" type="submit" class="btn btn-secondary btn-block">Update Name</button>'
+			+ '<button id="update" type="button" class="btn btn-secondary btn-block">Update Name</button>'
 			+ '</div>' + '</form>' + '</li>' + '</ul>';
 
 	deleteDiv.innerHTML = '<form class="form" name="deleteForm" role="form">'
 			+ '<div class="form-group">'
-			+ '<button id="remove" type="submit" class="btn btn-secondary btn-block">Delete Acct</button>'
+			+ '<button id="remove" type="button" class="btn btn-secondary btn-block">Delete Acct</button>'
 			+ '</div>' + '</form>';
 
 	psDiv.innerHTML = '';
 	var c;
-	for (c = 0; c < user.photoshoots.length; c++) {
-		psDiv.innerHTML += '<form class="form" name="psForm" role="form">'
-				+ '<div class="form-group">'
-				+ '<input name="psId"'
-				+ 'type="hidden" class="form-control form-control-sm"'
-				+ 'value="' + user.photoshoots[c].id + '" required="required">'
-				+ '</div>'
-				+ '<div class="form-group">'
-				+ '<button type="submit" class="btn btn-secondary btn-warning">'
-				+ user.photoshoots[c].id 
-				+ '</button></div></form>';
-		console.log(user.photoshoots[c].id);
+	if (user.photoshoots != null) {
+		for (c = 0; c < user.photoshoots.length; c++) {
+			var cc = c;
+			psDiv.innerHTML += '<form class="form" name="psForm" role="form">'
+					+ '<div class="form-group">' + '<input name="psId"'
+					+ 'type="hidden" class="form-control form-control-sm"'
+					+ 'value="' + user.photoshoots[cc].id
+					+ '" required="required">' + '</div>'
+					+ '<div class="form-group">'
+					+ '<button type="button" class="btn btn-danger">'
+					+ user.photoshoots[cc].name + '</button></div></form>';
+			console.log(user.photoshoots[cc].id);
+		}
+
 	}
-	var allPs = document.getElementsByClassName('btn btn-secondary btn-warning');
-	var index = '';
-	for (c = 0; c < allPs.length; c++) {
-		index = user.photoshoots[c].id;
-		allPs[c].addEventListener('click', function(event) {
-			event.preventDefault();
-			displayPhotoshoot(user, index);
-		});
-	}
+	psDiv.innerHTML += '<button type="button" id="dropdownMenu1" data-toggle="dropdown"'
+			+ 'class="btn btn-outline-secondary dropdown-toggle">'
+			+ 'Add New PS<span class="caret"></span>'
+			+ '</button>'
+			+ '<ul class="dropdown-menu dropdown-menu-right mt-2">'
+			+ '<li class="px-3 py-2">'
+			+ '<form class="form" name="newPsForm" role="form">'
+			+ '<div class="form-group">'
+			+ '<input name="name"'
+			+ 'type="text" class="form-control form-control-sm"'
+			+ 'placeholder="Title" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<input name="description"'
+			+ 'type="text" class="form-control form-control-sm"'
+			+ 'placeholder="Description" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<input name="length"'
+			+ 'type="number" class="form-control form-control-sm"'
+			+ 'placeholder="Length" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<input name="street"'
+			+ 'type="text" class="form-control form-control-sm"'
+			+ 'placeholder="Street" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<input name="city"'
+			+ 'type="text" class="form-control form-control-sm"'
+			+ 'placeholder="City" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<input name="state"'
+			+ 'type="text" class="form-control form-control-sm"'
+			+ 'placeholder="State" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<input name="zip"'
+			+ 'type="number" class="form-control form-control-sm"'
+			+ 'placeholder="Zip" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<input name="phone"'
+			+ 'type="text" class="form-control form-control-sm"'
+			+ 'placeholder="Phone" required="required">'
+			+ '</div>'
+			+ '<div class="form-group">'
+			+ '<button id="createPs" type="button" class="btn btn-warning">'
+			+ 'Create</button></div></form>';
+
+	newPsForm.createPs.addEventListener('click', function(event) {
+		event.preventDefault();
+		createPhotoshoot(user);
+	});
 
 	loginDiv.textContent = '';
 	registerDiv.textContent = '';
@@ -308,6 +393,9 @@ function displayUser(user) {
 	let emailh6 = document.createElement('h6');
 	dataDiv.appendChild(emailh6);
 	emailh6.textContent = user.email;
+	let psh6 = document.createElement('h6');
+	dataDiv.appendChild(psh6);
+	psh6.textContent = user.photoshoots.length + ' photoshoots';
 	console.log(user);
 
 	document.deleteForm.remove.addEventListener('click', function(event) {
@@ -318,5 +406,20 @@ function displayUser(user) {
 		event.preventDefault();
 		updateUser(user);
 	});
+
+	var allPs = document.getElementsByClassName('btn btn-danger');
+	var index = '';
+	var displayPs, i, ii;
+	console.log(allPs.length);
+	for (i = 0; i < allPs.length; i++) {
+		ii = i;
+		displayPhotoshoot(user, user.photoshoots[ii].id);
+		console.log("adding listener to " + user.photoshoots[ii].id);
+		allPs[ii].addEventListener('click', function(event) {
+			console.log("CLICKY");
+			event.preventDefault();
+			displayPhotoshoot(user);
+		});
+	}
 
 }

@@ -24,6 +24,8 @@ public class Photoshoot {
 
 	private int length;
 
+	private String name;
+
 	private String description;
 
 	@ManyToOne
@@ -48,8 +50,8 @@ public class Photoshoot {
 
 	@Override
 	public String toString() {
-		return "Photoshoot [id=" + id + ", length=" + length + ", description=" + description + ", address=" + address
-				+ ", user=" + user.getEmail() + "]";
+		return "Photoshoot [id=" + id + ", length=" + length + ", name=" + name + ", description=" + description
+				+ ", address=" + address + ", photoshootImages=" + photoshootImages + "]";
 	}
 
 	public int getId() {
@@ -116,6 +118,14 @@ public class Photoshoot {
 		}
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -124,6 +134,7 @@ public class Photoshoot {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		result = prime * result + length;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((photoshootImages == null) ? 0 : photoshootImages.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
@@ -151,6 +162,11 @@ public class Photoshoot {
 		if (id != other.id)
 			return false;
 		if (length != other.length)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		if (photoshootImages == null) {
 			if (other.photoshootImages != null)

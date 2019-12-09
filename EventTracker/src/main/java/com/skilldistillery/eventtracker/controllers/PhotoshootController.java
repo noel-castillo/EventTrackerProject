@@ -31,7 +31,7 @@ public class PhotoshootController {
 		return svc.findAllPhotoshootsByUser(email);
 	}
 	
-	@GetMapping("photoshoots/{psId}")
+	@GetMapping("users/{email}/photoshoots/{psId}")
 	public Photoshoot findPhotoshootById(@PathVariable int psId, HttpServletRequest request,
 			HttpServletResponse response) {
 		return svc.findPhotoshootById(psId);
