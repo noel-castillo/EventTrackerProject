@@ -149,7 +149,7 @@ function displayPhotoshoot(user, psId) {
 				}
 			}
 
-			dataDiv.innerHTML += '<button type="button" id="dropdownMenu1" data-toggle="dropdown"'
+			dataDiv.innerHTML += '<div><button type="button" id="dropdownMenu1" data-toggle="dropdown"'
 					+ 'class="btn btn-outline-secondary dropdown-toggle">'
 					+ 'ADD IMAGE<span class="caret"></span>'
 					+ '</button>'
@@ -168,12 +168,85 @@ function displayPhotoshoot(user, psId) {
 					+ '</button>'
 					+ '</div>'
 					+ '</form>'
-					+ '</li>' + '</ul>';
+					+ '</li>' + '</ul></div>';
+
+			dataDiv.innerHTML += '<div><button type="button" id="dropdownMenu2" data-toggle="dropdown"'
+					+ 'class="btn btn-outline-secondary dropdown-toggle">'
+					+ 'Update Details<span class="caret"></span>'
+					+ '</button>'
+					+ '<ul class="dropdown-menu dropdown-menu-right mt-2">'
+					+ '<li class="px-3 py-2">'
+					+ '<form class="form" name="updatePSForm" role="form">'
+					+ '<div class="form-group">'
+					+ '<input name="name"'
+					+ 'value="'
+					+ photoshoot.name
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<input name="description"'
+					+ 'value="'
+					+ photoshoot.description
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<input name="length"'
+					+ 'value="'
+					+ photoshoot.length
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<input name="street"'
+					+ 'value="'
+					+ photoshoot.address.street
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<input name="city"'
+					+ 'value="'
+					+ photoshoot.address.city
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<input name="state"'
+					+ 'value="'
+					+ photoshoot.address.state
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<input name="zip"'
+					+ 'value="'
+					+ photoshoot.address.zip
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<input name="phone"'
+					+ 'value="'
+					+ photoshoot.address.phone
+					+ '" class="form-control form-control-sm"'
+					+ ' type="text" required="required">'
+					+ '</div>'
+					+ '<div class="form-group">'
+					+ '<button id="updatePS" type="button" class="btn btn-secondary btn-block">Update'
+					+ '</button>' + '</div>' + '</form>' + '</li>' + '</ul></div>';
 
 			document.addImageForm.addImage.addEventListener('click', function(
 					event) {
 				event.preventDefault();
 				addImage(user, photoshoot);
+			});
+
+			document.updatePSForm.updatePS.addEventListener('click', function(
+					event) {
+				event.preventDefault();
+				updatePhotoshoot(user, photoshoot);
 			});
 
 		}
@@ -226,6 +299,38 @@ function updateUser(user) {
 	};
 	var updateUserJsonString = JSON.stringify(updateUserObject);
 	xhr.send(updateUserJsonString);
+}
+
+function updatePhotoshoot(user, photoshoot) {
+	var xhr = new XMLHttpRequest();
+	xhr.open('PUT', 'api/users/' + user.email + '/photoshoots/' + photoshoot.id,
+			true);
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status < 400) {
+			var psObject = JSON.parse(xhr.responseText);
+		}
+		if (xhr.readyState === 4 && xhr.status >= 400) {
+			console.error(xhr.status + ': ' + xhr.responseText);
+			var dataDiv = document.getElementById('userData');
+			dataDiv.textContent = 'Error Updating Photoshoot';
+		}
+	};
+	let form = document.addUpdatePSForm;
+	var updatePSObject = {
+		name : document.updatePSForm.name.value,
+		description : document.updatePSForm.description.value,
+		length : document.updatePSForm.length.value,
+		address : {
+			street : document.updatePSForm.street.value,
+			city : document.updatePSForm.city.value,
+			state : document.updatePSForm.state.value,
+			zip : document.updatePSForm.zip.value,
+			phone : document.updatePSForm.phone.value
+		}
+	};
+	var updatePSJsonString = JSON.stringify(updatePSObject);
+	xhr.send(updatePSJsonString);
 }
 
 function displayHome() {
