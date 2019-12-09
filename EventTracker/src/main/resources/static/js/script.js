@@ -553,7 +553,11 @@ function displayUser(user) {
 	emailh6.textContent = user.email;
 	let psh6 = document.createElement('h6');
 	dataDiv.appendChild(psh6);
-	psh6.textContent = user.photoshoots.length + ' photoshoots';
+	var totalTime = 0;
+	for(let v = 0; v < user.photoshoots.length; v++){
+		totalTime += user.photoshoots[v].length;
+	}
+	psh6.textContent = totalTime;
 	console.log(user);
 
 	document.deleteForm.remove.addEventListener('click', function(event) {
