@@ -22,8 +22,10 @@ DROP TABLE IF EXISTS `user` ;
 
 CREATE TABLE IF NOT EXISTS `user` (
   `email` VARCHAR(100) NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
+  `username` VARCHAR(100) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
+  `boolean` TINYINT NULL DEFAULT 1,
+  `role` VARCHAR(100) NULL DEFAULT 'user',
   PRIMARY KEY (`email`))
 ENGINE = InnoDB;
 
@@ -129,8 +131,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `eventtrackerdb`;
-INSERT INTO `user` (`email`, `name`, `password`) VALUES ('noel@es', 'Noel', 'admin');
-INSERT INTO `user` (`email`, `name`, `password`) VALUES ('annie@es', 'Annie', 'mozz');
+INSERT INTO `user` (`email`, `username`, `password`, `boolean`, `role`) VALUES ('noel@es', 'Noel', 'admin', true, 'admin');
+INSERT INTO `user` (`email`, `username`, `password`, `boolean`, `role`) VALUES ('annie@es', 'Annie', 'mozz', true, 'admin');
 
 COMMIT;
 

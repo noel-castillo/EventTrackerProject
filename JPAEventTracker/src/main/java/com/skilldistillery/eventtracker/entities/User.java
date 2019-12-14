@@ -17,9 +17,13 @@ public class User {
 	@Id
 	private String email;
 
-	private String name;
+	private String username;
 
 	private String password;
+
+	private boolean enabled;
+
+	private String role;
 
 	@OneToMany(mappedBy = "user")
 	private List<Photoshoot> photoshoots;
@@ -34,15 +38,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [email=" + email + ", name=" + name + ", password=" + password + "]";
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		return "User [email=" + email + ", username=" + username + ", password=" + password + ", enabled=" + enabled
+				+ ", role=" + role + ", photoshoots=" + photoshoots + "]";
 	}
 
 	public String getEmail() {
@@ -85,14 +82,40 @@ public class User {
 		}
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + (enabled ? 1231 : 1237);
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((photoshoots == null) ? 0 : photoshoots.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -110,10 +133,7 @@ public class User {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
+		if (enabled != other.enabled)
 			return false;
 		if (password == null) {
 			if (other.password != null)
@@ -124,6 +144,16 @@ public class User {
 			if (other.photoshoots != null)
 				return false;
 		} else if (!photoshoots.equals(other.photoshoots))
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
 	}

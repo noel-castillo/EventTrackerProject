@@ -28,7 +28,7 @@ class PhotoshootRepositoryTest {
 		Optional<Photoshoot> opt = repo.findById(1);
 		assertTrue(opt.isPresent());
 		Photoshoot photoshoot = opt.get();
-		assertEquals("Annie", photoshoot.getUser().getName());
+		assertEquals("Annie", photoshoot.getUser().getUsername());
 	}
 
 }

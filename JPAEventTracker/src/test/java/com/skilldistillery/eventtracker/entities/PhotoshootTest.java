@@ -53,7 +53,7 @@ class PhotoshootTest {
 	@DisplayName("Test Photoshoot and User Relationship")
 	void test2() {
 		assertNotNull(photoshoot.getUser());
-		assertEquals("Annie", photoshoot.getUser().getName());
+		assertEquals("Annie", photoshoot.getUser().getUsername());
 	}
 	
 	@Test

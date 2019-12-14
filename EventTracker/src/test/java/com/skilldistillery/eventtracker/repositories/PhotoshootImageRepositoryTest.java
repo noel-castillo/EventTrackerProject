@@ -29,7 +29,7 @@ class PhotoshootImageRepositoryTest {
 		Optional<PhotoshootImage> opt = repo.findById(1);
 		assertTrue(opt.isPresent());
 		PhotoshootImage photoshootImage = opt.get();
-		assertEquals("Annie", photoshootImage.getPhotoshoot().getUser().getName());
+		assertEquals("Annie", photoshootImage.getPhotoshoot().getUser().getUsername());
 	}
 
 }

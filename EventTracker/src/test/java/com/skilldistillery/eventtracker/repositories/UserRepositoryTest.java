@@ -28,7 +28,7 @@ class UserRepositoryTest {
 		Optional<User> opt = repo.findById("noel@es");
 		assertTrue(opt.isPresent());
 		User user = opt.get();
-		assertEquals("Noel", user.getName());
+		assertEquals("Noel", user.getUsername());
 	}
 
 }
