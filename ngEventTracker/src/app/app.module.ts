@@ -10,6 +10,7 @@ import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { PhotoshootsComponent } from './components/photoshoots/photoshoots.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from './services/auth.service';
 
@@ -22,7 +23,8 @@ import { AuthService } from './services/auth.service';
     HomeComponent,
     NavbarComponent,
     RegisterComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    PhotoshootsComponent,
   ],
   imports: [
     BrowserModule,

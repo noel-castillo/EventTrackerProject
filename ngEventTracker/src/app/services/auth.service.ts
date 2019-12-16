@@ -8,13 +8,14 @@ import { catchError, tap } from 'rxjs/operators';
 })
 
 export class AuthService {
-  private baseUrl = 'http://localhost:8091/';
+  private baseUrl = 'http://localhost:8090/api/';
 
   constructor(private http: HttpClient) { }
 
   login(username, password) {
     // Make credentials
     const credentials = this.generateBasicAuthCredentials(username, password);
+    console.log('Credentials generated:' + credentials);
     // Send credentials as Authorization header (this is spring security convention for basic auth)
     const httpOptions = {
       headers: new HttpHeaders({

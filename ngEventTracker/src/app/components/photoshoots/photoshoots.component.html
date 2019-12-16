@@ -1,0 +1,58 @@
+<h1>{{title}} <span class="badge badge-primary">{{count()}}</span></h1>
+<div *ngIf=!selected>
+  <table class="table table-hover table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor='let photoshoot of photoshoots'>
+        <td>{{photoshoot.id}}</td>
+        <td (click)="displayPhotoshoot(photoshoot)">{{photoshoot.name}}</td>
+        <td (click)="displayPhotoshoot(photoshoot)">{{photoshoot.description}}</td>
+        <td>{{photoshoot.address.city}}, {{photoshoot.address.state}}</td>
+        <td (click)="deletePhotoshoot(photoshoot.id)">X</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<form>
+  <input type="text" name="task" placeholder="Title" [(ngModel)]="newPhotoshoot.name">
+  <input type="text" name="task" placeholder="Description" [(ngModel)]="newPhotoshoot.description">
+  <input type="text" name="task" placeholder="City" [(ngModel)]="newAddress.city">
+  <input type="text" name="task" placeholder="State" [(ngModel)]="newAddress.state">
+  <button class="btn btn-warning" (click)="addPhotoshoot(newPhotoshoot)">Add Photoshoot</button>
+</form>
+
+<div *ngIf="selected && ! editPhotoshoot">
+  <p>{{selected.id}}</p>
+  <p>{{selected.name}}</p>
+  <p>{{selected.description}}</p>
+  <p>{{selected.address.city}}</p>
+  <p>{{selected.address.state}}</p>
+  <button class="btn btn-secondary" (click)="displayTable()">Back</button>
+  <button class="btn btn-warning" (click)="setEditPhotoshoot()">Edit</button>
+  <button class="btn btn-danger" (click)="deletePhotoshoot(selected.id)">DELETE</button>
+</div>
+
+<div *ngIf="editPhotoshoot">
+  <h2>{{editPhotoshoot.id}}</h2>
+  <form>
+    <label for="name">Name</label>
+    <input type="text" name="task" [(ngModel)]="editPhotoshoot.name"><br>
+    <label for="description">Description</label>
+    <input type="text" name="description" [(ngModel)]="editPhotoshoot.description"><br>
+    <label for="city">City</label>
+    <input type="text" name="city" [(ngModel)]="editPhotoshoot.address.city"><br>
+    <label for="state">State</label>
+    <input type="text" name="state" [(ngModel)]="editPhotoshoot.address.state"><br>
+    <button class="btn btn-warning" (click)="updatePhotoshoot(editPhotoshoot)">Save</button>
+    <button class="btn btn-warning" (click)="editPhotoshoot = null">Cancel</button>
+  </form>
+</div>

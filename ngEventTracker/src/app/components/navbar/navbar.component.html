@@ -1,1 +1,57 @@
-<p>navbar works!</p>
+<ul list-style="none">
+  <li id="loginDiv" *ngIf='!checkLogin()' class="dropdown order-1">
+    <button type="button" id="dropdownMenu1" data-toggle="dropdown"
+      class="btn btn-outline-secondary dropdown-toggle">
+      Login <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right mt-2">
+      <li class="px-3 py-2">
+        <form #loginForm="ngForm">
+          <div class="form-group">
+            <input name="username"
+              placeholder="Username" class="form-control form-control-sm"
+              type="text" ngModel required="required">
+            <input id="passwordLogin" name="password"
+              placeholder="Password" class="form-control form-control-sm"
+              type="password" ngModel required="required">
+            <button  (click)="login(loginForm)" type="submit" name="login" class="btn btn-secondary btn-block">Login</button>
+          </div>
+        </form>
+      </li>
+    </ul>
+  </li>
+  <li id="registerDiv" class="dropdown order-1">
+    <button type="button" id="dropdownMenu1" data-toggle="dropdown"
+      class="btn btn-outline-secondary dropdown-toggle">
+      Register <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right mt-2">
+      <li class="px-3 py-2">
+        <form #registerForm="ngForm">
+          <div class="form-group">
+            <input [(ngModel)]="newUser.username" name="username"
+              placeholder="Username" class="form-control form-control-sm"
+              type="text" required="required">
+          </div>
+          <div class="form-group">
+            <input [(ngModel)]="newUser.email" name="email"
+              placeholder="Email" class="form-control form-control-sm"
+              type="text" required="required">
+          </div>
+          <div class="form-group">
+            <input [(ngModel)]="newUser.password" name="password"
+              placeholder="Password" class="form-control form-control-sm"
+              type="password" required="required">
+          </div>
+          <div class="form-group">
+            <button (click)="register()" type="submit" name="create" class="btn btn-secondary btn-block">Register</button>
+          </div>
+        </form>
+      </li>
+    </ul>
+  </li>
+  <li *ngIf='checkLogin()' (click)="logout()"><button type="button"
+    class="btn btn-outline-secondary">
+    Logout <span class="caret"></span>
+  </button></li>
+</ul>
