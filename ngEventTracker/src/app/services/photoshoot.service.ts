@@ -5,6 +5,7 @@ import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Photoshoot } from './../models/photoshoot';
 import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class PhotoshootService {
 
   // F I E L D S
 
-  private baseUrl = 'http://localhost:8090/';
+  // private baseUrl = 'http://localhost:8090/';
+  private baseUrl = environment.baseURL;
   private url = this.baseUrl + 'api/users/annie@es/photoshoots';
 
   photoshoots: Photoshoot[] = [];

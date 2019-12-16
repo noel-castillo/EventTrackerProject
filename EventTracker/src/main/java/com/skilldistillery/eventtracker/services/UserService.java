@@ -16,4 +16,6 @@ public interface UserService {
 
 	User updateUser(String email, User user);
 
+	User register(User user);
+
 }

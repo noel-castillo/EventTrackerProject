@@ -2,17 +2,35 @@ package com.skilldistillery.eventtracker.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 
 import com.skilldistillery.eventtracker.entities.User;
 import com.skilldistillery.eventtracker.repositories.UserRepository;
 
-@Service
+@Repository
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository repo;
+	
+	@Autowired
+	private PasswordEncoder encoder;
+
+	@Override
+	public User register(User user) {
+		String encodedPW = encoder.encode(user.getPassword());
+		user.setPassword(encodedPW); // only persist encoded password
+
+		// set other fields to default values
+
+		repo.saveAndFlush(user);
+		return user;
+	}
 
 	@Override
 	public List<User> findAllUsers() {
@@ -30,6 +48,8 @@ public class UserServiceImpl implements UserService {
 		if (repo.findById(user.getEmail()).isPresent()) {
 			return null;
 		} else {
+			user.setRole("standard");
+			user.setEnabled(true);
 			return repo.saveAndFlush(user);
 		}
 	}

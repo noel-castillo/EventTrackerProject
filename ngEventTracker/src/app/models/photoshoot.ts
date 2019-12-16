@@ -6,6 +6,7 @@ export class Photoshoot {
   name: string;
   description: string;
   address: Address;
+  email: string;
 
 
   // C O N S T R U C T O R

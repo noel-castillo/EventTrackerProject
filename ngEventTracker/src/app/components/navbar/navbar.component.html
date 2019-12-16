@@ -20,7 +20,7 @@
       </li>
     </ul>
   </li>
-  <li id="registerDiv" class="dropdown order-1">
+  <li id="registerDiv"  *ngIf='!checkLogin()' class="dropdown order-1">
     <button type="button" id="dropdownMenu1" data-toggle="dropdown"
       class="btn btn-outline-secondary dropdown-toggle">
       Register <span class="caret"></span>

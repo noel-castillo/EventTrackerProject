@@ -28,7 +28,8 @@ export class PhotoshootsComponent implements OnInit {
 
   showComplete = false;
 
-  urlId = 0;
+  urlId = '';
+  currentRoute: ActivatedRoute;
 
   // C O N S T R U C T O R
 
@@ -38,12 +39,12 @@ export class PhotoshootsComponent implements OnInit {
     this.psSvc.index().subscribe(
       data => {
         this.photoshoots = data;
-        // if (!this.selected && this.currentRoute.snapshot.paramMap.get('id')) {
-        //   this.urlId = 0;
-        //   this.urlId = +this.currentRoute.snapshot.paramMap.get('id');
+        // if (!this.selected && this.currentRoute.snapshot.paramMap.get('email')) {
+        //   this.urlId = '';
+        //   this.urlId = this.currentRoute.snapshot.paramMap.get('email');
         //   console.log(this.urlId);
         //   this.photoshoots.forEach((d) => {
-        //     if (d.id === this.urlId) {
+        //     if (d.email === this.urlId) {
         //       this.selected = d;
         //       console.log(this.selected);
         //     }
@@ -103,7 +104,7 @@ export class PhotoshootsComponent implements OnInit {
     );
   }
 
-  setEditPhotoshoot(photoshoot: Photoshoot) {
+  setEditPhotoshoot() {
     this.editPhotoshoot = Object.assign({}, this.selected);
   }
 

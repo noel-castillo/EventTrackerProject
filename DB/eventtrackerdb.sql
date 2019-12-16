@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` VARCHAR(100) NOT NULL,
   `username` VARCHAR(100) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
-  `boolean` TINYINT NULL DEFAULT 1,
-  `role` VARCHAR(100) NULL DEFAULT 'user',
+  `enabled` TINYINT NULL DEFAULT 1,
+  `role` VARCHAR(100) NULL,
   PRIMARY KEY (`email`))
 ENGINE = InnoDB;
 
@@ -101,8 +101,8 @@ DROP TABLE IF EXISTS `friends` ;
 CREATE TABLE IF NOT EXISTS `friends` (
   `user_email` VARCHAR(100) NOT NULL,
   `friend_email` VARCHAR(100) NOT NULL,
-  INDEX `fk_friends_user1_idx` (`user_email` ASC),
   INDEX `fk_friends_user2_idx` (`friend_email` ASC),
+  INDEX `fk_friends_user_idx` (`user_email` ASC),
   CONSTRAINT `fk_friends_user`
     FOREIGN KEY (`user_email`)
     REFERENCES `user` (`email`)
@@ -131,8 +131,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `eventtrackerdb`;
-INSERT INTO `user` (`email`, `username`, `password`, `boolean`, `role`) VALUES ('noel@es', 'Noel', 'admin', true, 'admin');
-INSERT INTO `user` (`email`, `username`, `password`, `boolean`, `role`) VALUES ('annie@es', 'Annie', 'mozz', true, 'admin');
+INSERT INTO `user` (`email`, `username`, `password`, `enabled`, `role`) VALUES ('noel@es', 'noel', '$2y$12$nfpt5FCeJG57wG4NcIS98ugWMtHxLmQEdU5Y.uWD4rIgwWzLqA3Cm', true, 'standard');
+INSERT INTO `user` (`email`, `username`, `password`, `enabled`, `role`) VALUES ('annie@es', 'annie', '$2y$12$NiwHSEwow3Un1/sKNdmHgOKjBfyZoClsIg0LlA.eKH8hu.wmMXAyO', true, 'standard');
 
 COMMIT;
 

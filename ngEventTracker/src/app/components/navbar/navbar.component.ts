@@ -39,6 +39,7 @@ export class NavbarComponent implements OnInit {
   }
 
   register() {
+    console.log(this.newUser);
     this.auth.register(this.newUser).subscribe(
       data => {
         console.log('NavbarComponent.register(): user logged in, routing to /home.');
@@ -48,12 +49,14 @@ export class NavbarComponent implements OnInit {
       err => {
         console.error('NavbarComponent.register(): error logging in.');
         console.error(err);
+        this.newUser = new User();
       }
     );
   }
 
   logout() {
     this.auth.logout();
+    this.router.navigateByUrl('home');
   }
 
 }

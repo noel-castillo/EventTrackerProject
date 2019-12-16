@@ -42,6 +42,7 @@ Copyright (c) 2015 Daniel Eden
   animation-duration: .75s;
 }
 
+
 .animated.flipOutX,
 .animated.flipOutY {
   -webkit-animation-duration: .75s;
